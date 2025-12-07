@@ -3,7 +3,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 test.describe('Extract Worker Information', () => {
-  test('should extract worker name', async ({ page }) => {
+  test.use({ 
+    launchOptions: { 
+      headless: false 
+    } 
+  });
+
+  test('should extract worker name', async ({ page, context }) => {
     // Configuration
     const outputDir = path.join(process.cwd(), 'output');
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -42,8 +48,12 @@ test.describe('Extract Worker Information', () => {
     console.log('✅ Extraction completed successfully!');
     console.log(`📁 Data saved to: ${outputFile}`);
     console.log(`📊 Worker name: ${workerName}\n`);
+    console.log('🌐 Browser will remain open. Press Ctrl+C to close.\n');
 
     // Verify the file was created
     expect(fs.existsSync(outputFile)).toBeTruthy();
+
+    // Keep the browser open indefinitely
+    await page.waitForTimeout(999999999);
   });
 });
