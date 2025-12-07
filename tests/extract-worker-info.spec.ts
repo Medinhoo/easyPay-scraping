@@ -14,12 +14,16 @@ test.describe('Extract Worker Information', () => {
       fs.mkdirSync(outputDir, { recursive: true });
     }
 
+    // Navigate to EasyPay
+    console.log('\n🌐 Navigating to http://pceasy/...');
+    await page.goto('http://pceasy/');
+
     // Wait for manual login - user should navigate to the worker page
-    console.log('\n⏳ Please log in manually and navigate to the worker page...');
+    console.log('⏳ Please log in manually and navigate to the worker page...');
     console.log('⏳ The script will wait for the page to be ready...\n');
 
     // Wait for the main form to be present (indicates we're on the worker page)
-    await page.waitForSelector('.tab-content', { timeout: 120000 });
+    await page.waitForSelector('.tab-content', { timeout: 300000 }); // 5 minutes timeout
     
     console.log('✅ Worker page detected! Starting extraction...\n');
 

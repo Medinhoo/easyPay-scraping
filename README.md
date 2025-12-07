@@ -12,16 +12,16 @@ npm install
 
 ### Extraction des données d'un travailleur
 
-1. **Connectez-vous manuellement** à EasyPay dans votre navigateur
-2. **Naviguez vers la fiche du travailleur** que vous souhaitez extraire
-3. **Lancez le script** :
+1. **Lancez le script** :
 
 ```bash
 npm test
 ```
 
-4. Le script va :
-   - Attendre que vous soyez sur la page de la fiche travailleur (timeout de 2 minutes)
+2. Le script va :
+   - Ouvrir automatiquement http://pceasy/
+   - Attendre que vous vous connectiez manuellement
+   - Attendre que vous naviguiez vers la fiche du travailleur (timeout de 5 minutes)
    - Extraire automatiquement toutes les données
    - Sauvegarder les résultats dans `./output/worker-data-[timestamp].json`
 
