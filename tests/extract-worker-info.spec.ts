@@ -3,11 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 test.describe('Extract Worker Information', () => {
-  test.use({ 
-    launchOptions: { 
-      headless: false 
-    } 
-  });
 
   test('should extract worker name', async ({ page, context }) => {
     // Configuration
@@ -28,13 +23,18 @@ test.describe('Extract Worker Information', () => {
     console.log('⏳ Please log in manually and navigate to the worker page...');
     console.log('⏳ The script will wait for the page to be ready...\n');
 
-    // Wait for the name field to be present
-    await page.waitForSelector('#wknFamilienaam', { timeout: 300000 });
+    //Wait for loginPage
+    await page.waitForSelector('#user', { timeout: 10000 });
     
-    console.log('✅ Worker page detected! Starting extraction...\n');
+    await page.fill("#user", 'ILHAME')
+    await page.fill("#password", 'ILHAME')
+    await page.click("#butLogin")
+    
+    // Click on "Données de base travailleurs" menu item
+    await page.locator('iframe[name="targetFrame"]').contentFrame().locator('div').filter({ hasText: /^Données de base travailleurs$/ }).click()
 
     // Extract the worker name
-    const workerName = await page.inputValue('#wknFamilienaam');
+    const workerName = await page.locator('iframe[name="targetFrame"]').contentFrame().getByRole('textbox', { name: 'Nom', exact: true }).inputValue()
 
     // Create simple data object
     const workerData = {
@@ -53,7 +53,5 @@ test.describe('Extract Worker Information', () => {
     // Verify the file was created
     expect(fs.existsSync(outputFile)).toBeTruthy();
 
-    // Keep the browser open indefinitely
-    await page.waitForTimeout(999999999);
   });
 });
